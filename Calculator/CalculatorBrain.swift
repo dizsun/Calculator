@@ -156,100 +156,81 @@ class CalculatorBrain {
     }
     //计算简单算式
     private func evaluateSimpleFormula(ops:[Op]) -> Double? {
-        var preIndex = 0
-        var postIndex = 0
-        var tempStack = [Op]()
-        var preOperator = knownOps["+"]!
-        label: for var i=0; i<ops.count; i++ {
-            switch ops[i] {
-            case .BinaryOperation(_, _):
-                if ops[i].compareTo(preOperator) >= 0 {
-                    if i == ops.count-2{
-                        guard let innerFormula = getFormulaInRange(ops, preIndex: preIndex-1, postIndex: ops.count) else{
-                            return nil
-                        }
-                        guard let innerValue = evaluateRightFormula(innerFormula) else{
-                            return nil
-                        }
-                        tempStack.append(Op.Operand(innerValue))
-                        break label
-                    }
-                    preOperator = ops[i]
-                    break
-                }
-                else {
-                    guard let innerFormula = getFormulaInRange(ops, preIndex: preIndex-1, postIndex: postIndex+1) else{
-                        return nil
-                    }
-                    guard let innerValue = evaluateRightFormula(innerFormula) else{
-                        return nil
-                    }
-                    tempStack.append(Op.Operand(innerValue))
-                    tempStack.append(ops[i])
-                    preIndex = postIndex+2
-                    preOperator = ops[i]
-                }
-            case .UnaryOperation(_, _):
-                preOperator = ops[i]
-                tempStack.append(ops[i])
-            default:
-                if i == ops.count-1{
-                    tempStack.append(ops[i])
-                    break label
-                }
-                postIndex = i
-            }
-        }
-        if !tempStack.isEmpty {
-            if tempStack.count <= 3 {
-                return evaluateRightFormula(tempStack)
-            }
-            return evaluateSimpleFormula(tempStack)
-        }
-        else{
-            return evaluateRightFormula(ops)
-        }
+        let rightStack = middleToPost(ops)
+        return evaluateRightFormula(rightStack)
     }
-    //计算正序算式(右边的运算符的优先级总是不小于左边的运算符的优先级)
-    private func evaluateRightFormula(var ops:[Op]) -> Double?{
-        if !ops.isEmpty {
-            if ops.count == 1{
-                switch ops.removeLast() {
-                case .Operand(let value):
-                    return value
-                default:
-                    return nil
-                }
-            }
-            guard let value = Double(ops.removeLast().description) else{
-                return nil
-            }
-            let operation = ops.removeLast()
-            switch operation {
-            case .UnaryOperation(_, let perform):
-                if ops.isEmpty{
-                    return perform(value)
+    //将中序表达式变换为后序表达式
+    private func middleToPost(initialSatck: [Op]) -> [Op] {
+        var postStack = [Op]()
+        var tempStack = [Op]()
+        for var eachOp in initialSatck {
+            switch eachOp {
+            case .Operand(_):
+                postStack.append(eachOp)
+            case .Parenthese(let direction):
+                if !direction {
+                    tempStack.append(eachOp)
                 }
                 else{
-                    ops.append(Op.Operand(perform(value)))
-                    return evaluateRightFormula(ops)
+                    var tempValue = tempStack.removeLast()
+                    var value = tempValue.description
+                    while value != Op.Parenthese(true).description {
+                        postStack.append(tempValue)
+                        tempValue = tempStack.removeLast()
+                        value = tempValue.description
+                    }
                 }
-            case .BinaryOperation(_, let perform):
-                guard let leftValue = Double(ops.removeLast().description) else{
-                    return nil
+            case .BinaryOperation(_, _):
+                if tempStack.isEmpty {
+                    tempStack.append(eachOp)
                 }
-                if ops.isEmpty {
-                    return perform(leftValue,value)
+                else{
+                    if eachOp.compareTo(tempStack.last!) > 0 {
+                        tempStack.append(eachOp)
+                    }
+                    else{
+                        while !tempStack.isEmpty && eachOp.compareTo(tempStack.last!) <= 0 {
+                            postStack.append(tempStack.removeLast())
+                        }
+                        tempStack.append(eachOp)
+                    }
                 }
-                ops.append(Op.Operand(perform(leftValue,value)))
-                return evaluateRightFormula(ops)
+            case .UnaryOperation(_, _):
+                tempStack.append(eachOp)
             default:
-                return nil
+                break
             }
         }
-        return nil
+        while !tempStack.isEmpty {
+            postStack.append(tempStack.removeLast())
+        }
+        return postStack
     }
-    
+    //计算后序表达式
+    private func evaluateRightFormula(rightStack: [Op]) -> Double?{
+        var tempStack = [Double]()
+        for var i=0; i<rightStack.count; i++ {
+            switch rightStack[i] {
+            case .Operand(let value):
+                tempStack.append(value)
+            case .BinaryOperation(_, let perform):
+                let rightValue = tempStack.removeLast()
+                let leftValue = tempStack.removeLast()
+                let result = perform(leftValue,rightValue)
+                tempStack.append(result)
+            case .UnaryOperation(_, let perform):
+                let result = perform(tempStack.removeLast())
+                tempStack.append(result)
+            default: break
+            }
+        }
+        if tempStack.isEmpty {
+            return nil
+        }
+        else{
+            return tempStack.removeLast()
+        }
+    }
     //将opStack中的分离的数字解析为一个数字
     private func parseFormula() -> Bool {
         //首先判断括号是否一一匹配

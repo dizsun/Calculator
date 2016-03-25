@@ -22,7 +22,7 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="headTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ELx-Kn-gSF">
                                 <rect key="frame" x="12" y="20" width="296" height="65"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -57,7 +57,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kMu-g8-WfD">
                                 <rect key="frame" x="242" y="249" width="62" height="70"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="+"/>
+                                <state key="normal" title="+">
+                                    <color key="titleColor" red="0.90590918624161076" green="0.53262076008389281" blue="0.42103607382550334" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onNumberOrOperandClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="W6H-DU-Q7K"/>
                                 </connections>
@@ -92,7 +94,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tA7-3f-gnx">
                                 <rect key="frame" x="242" y="327" width="62" height="70"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="−"/>
+                                <state key="normal" title="−">
+                                    <color key="titleColor" red="0.90590918620000005" green="0.53262076010000003" blue="0.42103607380000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onNumberOrOperandClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Hm2-Gv-7j0"/>
                                 </connections>
@@ -127,7 +131,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eh0-Qg-Ghh">
                                 <rect key="frame" x="242" y="405" width="62" height="70"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="×"/>
+                                <state key="normal" title="×">
+                                    <color key="titleColor" red="0.90590918620000005" green="0.53262076010000003" blue="0.42103607380000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onNumberOrOperandClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SYo-rM-K1U"/>
                                 </connections>
@@ -138,7 +144,9 @@
                                     <constraint firstAttribute="height" constant="70" id="rLM-H7-uHw"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="√"/>
+                                <state key="normal" title="√">
+                                    <color key="titleColor" red="0.70152579697986572" green="0.48868200169463111" blue="0.87332214765100669" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onNumberOrOperandClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dPQ-Tn-7pP"/>
                                 </connections>
@@ -146,7 +154,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xCG-Y9-lZc">
                                 <rect key="frame" x="86" y="171" width="70" height="70"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="^/tan"/>
+                                <state key="normal" title="^/tan">
+                                    <color key="titleColor" red="0.70152579699999995" green="0.48868200169999998" blue="0.87332214770000005" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onNumberOrOperandClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HKq-qM-f0o"/>
                                     <action selector="onOperandDoubleClicked:" destination="BYZ-38-t0r" eventType="touchDownRepeat" id="S2j-hY-euT"/>
@@ -155,7 +165,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JBv-3a-GbA">
                                 <rect key="frame" x="164" y="171" width="70" height="70"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="log/sin"/>
+                                <state key="normal" title="log/sin">
+                                    <color key="titleColor" red="0.70152579699999995" green="0.48868200169999998" blue="0.87332214770000005" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onNumberOrOperandClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mu2-cI-wbm"/>
                                     <action selector="onOperandDoubleClicked:" destination="BYZ-38-t0r" eventType="touchDownRepeat" id="fWn-Sb-7IZ"/>
@@ -164,7 +176,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="McK-DK-myV">
                                 <rect key="frame" x="242" y="171" width="62" height="70"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="ln/cos"/>
+                                <state key="normal" title="ln/cos">
+                                    <color key="titleColor" red="0.70152579699999995" green="0.48868200169999998" blue="0.87332214770000005" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onNumberOrOperandClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Iya-5q-vNK"/>
                                     <action selector="onOperandDoubleClicked:" destination="BYZ-38-t0r" eventType="touchDownRepeat" id="nad-zz-EdV"/>
@@ -177,7 +191,9 @@
                                     <constraint firstAttribute="width" constant="70" id="r7z-Pu-wHl"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="("/>
+                                <state key="normal" title="(">
+                                    <color key="titleColor" red="0.13878984899328858" green="0.8186683691442953" blue="0.44334626677852351" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onNumberOrOperandClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WeQ-8W-HyQ"/>
                                 </connections>
@@ -188,7 +204,9 @@
                                     <constraint firstAttribute="width" constant="70" id="jpA-eM-DYO"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title=")"/>
+                                <state key="normal" title=")">
+                                    <color key="titleColor" red="0.13878984899999999" green="0.81866836909999996" blue="0.4433462668" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onNumberOrOperandClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IAl-fh-TvJ"/>
                                 </connections>
@@ -199,7 +217,9 @@
                                     <constraint firstAttribute="width" constant="70" id="fpl-3M-5lx"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Del"/>
+                                <state key="normal" title="Del">
+                                    <color key="titleColor" red="0.13878984899328858" green="0.8186683691442953" blue="0.44334626677852351" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onDelClicked" destination="BYZ-38-t0r" eventType="touchUpInside" id="Q28-6E-Yda"/>
                                 </connections>
@@ -207,7 +227,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZaG-4s-gqW">
                                 <rect key="frame" x="242" y="93" width="62" height="73"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="CE"/>
+                                <state key="normal" title="CE">
+                                    <color key="titleColor" red="0.13878984899999999" green="0.81866836909999996" blue="0.4433462668" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onCEClicked" destination="BYZ-38-t0r" eventType="touchUpInside" id="7TJ-wc-9Ms"/>
                                 </connections>
@@ -233,7 +255,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9hL-qU-fAB">
                                 <rect key="frame" x="164" y="483" width="70" height="67"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="="/>
+                                <state key="normal" title="=">
+                                    <color key="titleColor" red="0.86931103187919334" green="0.86676803691275173" blue="0.8795616610738255" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onEqualClicked" destination="BYZ-38-t0r" eventType="touchUpInside" id="6bP-Ya-L68"/>
                                 </connections>
@@ -241,13 +265,15 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YHy-ob-a7S">
                                 <rect key="frame" x="242" y="483" width="62" height="67"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="÷"/>
+                                <state key="normal" title="÷">
+                                    <color key="titleColor" red="0.90590918620000005" green="0.53262076010000003" blue="0.42103607380000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onNumberOrOperandClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KDD-eh-IRj"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.76862745098039209" green="0.85490196078431369" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="zLW-dP-CcC" firstAttribute="top" secondItem="WC9-yl-Znq" secondAttribute="top" id="0Lp-dh-wpg"/>
                             <constraint firstItem="JBv-3a-GbA" firstAttribute="top" secondItem="xCG-Y9-lZc" secondAttribute="top" id="0c6-tF-a8w"/>
