@@ -9,68 +9,129 @@
 import UIKit
 
 class ViewController: UIViewController {
-    //显示屏
+    //MARK: 显示屏
     @IBOutlet weak var display: UILabel!
     
-    //逻辑控制
-    var brain = CalculatorBrain()
-    //用户是否正在输入数字
-    var userIsInTheMiddleOfTypingANumber: Bool = false
-    
-    //输入数字
-    @IBAction func appendDigit(sender: UIButton) {
-        if let digit = sender.currentTitle{
-            if let text = display.text{
-                if userIsInTheMiddleOfTypingANumber{
-                    display.text = text + digit
-                }
-                else{
-                    display.text = digit
-                    userIsInTheMiddleOfTypingANumber = true
-                }
+    private var displayValue:[String] = []{
+        didSet{
+            display?.text! = ""
+            for eachStr in displayValue {
+                display.text! += eachStr
+            }
+            if displayValue.isEmpty {
+                display.text! = "0"
             }
         }
     }
-    
-    //按下运算符按钮
-    @IBAction func operate(sender: UIButton) {
-        if userIsInTheMiddleOfTypingANumber {
-            enter()
-        }
-        guard let operation = sender.currentTitle else{
-            return
-        }
-        displayValue = brain.performOperation(operation)
-        
-    }
-    
-    //按下确认按钮
-    @IBAction func enter() {
-        userIsInTheMiddleOfTypingANumber = false
-        displayValue = brain.pushOperand(displayValue)
-    }
-    
-    //管理显示屏数字
-    var displayValue: Double?{
-        get{
-            guard let value = display.text else{
-                return 0
-            }
-            guard let digits = Double.init(value) else{
-                return 0
-            }
-            return digits
-        }
-        set{
-            if let v = newValue{
-                display.text = "\(v)"
+    //在输入或输出模式下转换文本显示形式
+    //若是正在输入则截取后面部分
+    //否则截取前面部分
+    private var isInputing = false {
+        didSet{
+            if isInputing{
+                display.lineBreakMode = NSLineBreakMode.ByTruncatingHead
             }
             else{
-                display.text = "Error!"
+                display.lineBreakMode = NSLineBreakMode.ByTruncatingTail
             }
-            userIsInTheMiddleOfTypingANumber = false
         }
     }
+
+    //MARK: 逻辑控制
+    private var brain = CalculatorBrain()
+    /*
+    clickTimes属性与下面的dealingComplex函数专为ios脑残的单击/双击事件定制，可区分他们
+    */
+    private var clickTimes = 0 {
+        didSet{
+            if clickTimes == 2 {
+                brain.popOperand()
+                displayValue.removeLast()
+                clickTimes = 0
+            }
+            
+        }
+    }
+    private func dealingComplexBtn(text:String){
+        brain.pushOperand(text)
+        displayValue.append(text)
+        clickTimes += 1
+        clickTimes = 0
+    }
+    
+    @IBAction func onNumberOrOperandClicked(sender: UIButton) {
+        let text = sender.currentTitle!
+        isInputing = true
+        switch text {
+            case "^/tan":
+                dealingComplexBtn("^")
+            case "log/sin":
+                dealingComplexBtn("log")
+            case "ln/cos":
+                dealingComplexBtn("ln")
+            case "./e":
+                dealingComplexBtn(".")
+            case "0/pi":
+                dealingComplexBtn("0")
+            default:
+                brain.pushOperand(text)
+                displayValue.append(text)
+        }
+    }
+
+    @IBAction func onOperandDoubleClicked(sender: UIButton) {
+        let text = sender.currentTitle!
+        clickTimes = 1
+        brain.popOperand()
+        displayValue.removeLast()
+        isInputing = true
+        switch text {
+        case "^/tan":
+            brain.pushOperand("tan")
+            displayValue.append("tan")
+        case "log/sin":
+            brain.pushOperand("sin")
+            displayValue.append("sin")
+        case "ln/cos":
+            brain.pushOperand("cos")
+            displayValue.append("cos")
+        case "./e":
+            brain.pushOperand("e")
+            displayValue.append("e")
+        case "0/pi":
+            brain.pushOperand("pi")
+            displayValue.append("pi")
+        default:
+            break
+        }
+    }
+    
+    @IBAction func onEqualClicked() {
+        isInputing = false
+        if let value = brain.evaluate(){
+            displayValue.removeAll()
+            displayValue.append("\(value)")
+        }
+        else{
+            displayValue.removeAll()
+            displayValue.append("输入格式错误")
+        }
+    }
+
+    @IBAction func onDelClicked() {
+        isInputing = true
+        brain.popOperand()
+        if !displayValue.isEmpty {
+            displayValue.removeLast()
+        }
+    }
+    
+    @IBAction func onCEClicked() {
+        isInputing = true
+        brain.clearOpSatck()
+        displayValue.removeAll()
+    }
+    
     
 }
 
