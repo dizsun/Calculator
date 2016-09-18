@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     //MARK: 显示屏
     @IBOutlet weak var display: UILabel!
     
-    private var displayValue:[String] = []{
+    fileprivate var displayValue:[String] = []{
         didSet{
             display?.text! = ""
             for eachStr in displayValue {
@@ -26,23 +26,23 @@ class ViewController: UIViewController {
     //在输入或输出模式下转换文本显示形式
     //若是正在输入则截取后面部分
     //否则截取前面部分
-    private var isInputing = false {
+    fileprivate var isInputing = false {
         didSet{
             if isInputing{
-                display.lineBreakMode = NSLineBreakMode.ByTruncatingHead
+                display.lineBreakMode = NSLineBreakMode.byTruncatingHead
             }
             else{
-                display.lineBreakMode = NSLineBreakMode.ByTruncatingTail
+                display.lineBreakMode = NSLineBreakMode.byTruncatingTail
             }
         }
     }
 
     //MARK: 逻辑控制
-    private var brain = CalculatorBrain()
+    fileprivate var brain = CalculatorBrain()
     /*
     clickTimes属性与下面的dealingComplex函数专为ios脑残的单击/双击事件定制，可区分他们
     */
-    private var clickTimes = 0 {
+    fileprivate var clickTimes = 0 {
         didSet{
             if clickTimes == 2 {
                 brain.popOperand()
@@ -52,14 +52,14 @@ class ViewController: UIViewController {
             
         }
     }
-    private func dealingComplexBtn(text:String){
+    fileprivate func dealingComplexBtn(_ text:String){
         brain.pushOperand(text)
         displayValue.append(text)
         clickTimes += 1
         clickTimes = 0
     }
     
-    @IBAction func onNumberOrOperandClicked(sender: UIButton) {
+    @IBAction func onNumberOrOperandClicked(_ sender: UIButton) {
         let text = sender.currentTitle!
         isInputing = true
         switch text {
@@ -79,7 +79,7 @@ class ViewController: UIViewController {
         }
     }
 
-    @IBAction func onOperandDoubleClicked(sender: UIButton) {
+    @IBAction func onOperandDoubleClicked(_ sender: UIButton) {
         let text = sender.currentTitle!
         clickTimes = 1
         brain.popOperand()

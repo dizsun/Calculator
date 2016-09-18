@@ -14,42 +14,42 @@ import Foundation
 class CalculatorBrain {
     //MARK: 内置数据
     //计算器的输入有三类：数字、一元运算符、二元运算符
-    private enum Operation: CustomStringConvertible {
-        case Operand(Double)    //运算数字
-        case UnaryOperator(String,Double->Double)  //一元运算符
-        case BinaryOperator(String,(Double,Double)->Double)    //二元运算符
-        case Dot
-        case Parenthese(Bool)//括号，如果Parenthese的值是true则为)否则为(
-        case PI
-        case E
+    fileprivate enum Operation: CustomStringConvertible {
+        case operand(Double)    //运算数字
+        case unaryOperator(String,(Double)->Double)  //一元运算符
+        case binaryOperator(String,(Double,Double)->Double)    //二元运算符
+        case dot
+        case parenthese(Bool)//括号，如果Parenthese的值是true则为)否则为(
+        case pi
+        case e
         //Op的toString方法
         var description:String{
             get{
                 switch self{
-                case .Operand(let operand):
+                case .operand(let operand):
                     return "\(operand)"
-                case .UnaryOperator(let operation, _):
+                case .unaryOperator(let operation, _):
                     return "\(operation)"
-                case .BinaryOperator(let operation, _):
+                case .binaryOperator(let operation, _):
                     return "\(operation)"
-                case .Dot:
+                case .dot:
                     return "."
-                case .Parenthese(let direction):
+                case .parenthese(let direction):
                     if direction {
                         return ")"
                     }
                     else{
                         return "("
                     }
-                case .PI:
+                case .pi:
                     return "pi"
-                case .E:
+                case .e:
                     return "e"
                 }
             }
         }
         //运算符的比较，+，-运算优先级最小为0，*，/为1，^为2，单目运算符为3
-        func compareTo(other:Operation) -> Int {
+        func compareTo(_ other:Operation) -> Int {
             let priority = [ "+":0, "−":0, "×":1, "÷":1, "^":2, "√":3, "log":3, "ln":3, "sin":3, "cos":3, "tan":3 ]
             if priority.keys.contains(self.description)
                 && priority.keys.contains(other.description) {
@@ -59,27 +59,27 @@ class CalculatorBrain {
         }
     }
     //盛放输入内容的栈
-    private var preStack = [Operation]()
+    fileprivate var preStack = [Operation]()
     //所有会用到的运算符集合
-    private var knownOps = [String:Operation]()
+    fileprivate var knownOps = [String:Operation]()
     
     init(){
-        knownOps["+"] = Operation.BinaryOperator("+", +)
-        knownOps["−"] = Operation.BinaryOperator("−", -)
-        knownOps["×"] = Operation.BinaryOperator("×", *)
-        knownOps["÷"] = Operation.BinaryOperator("÷", /)
-        knownOps["^"] = Operation.BinaryOperator("^", pow)
-        knownOps["√"] = Operation.UnaryOperator("√", sqrt)
-        knownOps["log"] = Operation.UnaryOperator("log", log2)
-        knownOps["ln"] = Operation.UnaryOperator("ln", log)
-        knownOps["sin"] = Operation.UnaryOperator("sin", sin)
-        knownOps["cos"] = Operation.UnaryOperator("cos", cos)
-        knownOps["tan"] = Operation.UnaryOperator("tan", tan)
-        knownOps["("] = Operation.Parenthese(false)
-        knownOps[")"] = Operation.Parenthese(true)
-        knownOps["."] = Operation.Dot
-        knownOps["e"] = Operation.E
-        knownOps["pi"] = Operation.PI
+        knownOps["+"] = Operation.binaryOperator("+", +)
+        knownOps["−"] = Operation.binaryOperator("−", -)
+        knownOps["×"] = Operation.binaryOperator("×", *)
+        knownOps["÷"] = Operation.binaryOperator("÷", /)
+        knownOps["^"] = Operation.binaryOperator("^", pow)
+        knownOps["√"] = Operation.unaryOperator("√", sqrt)
+        knownOps["log"] = Operation.unaryOperator("log", log2)
+        knownOps["ln"] = Operation.unaryOperator("ln", log)
+        knownOps["sin"] = Operation.unaryOperator("sin", sin)
+        knownOps["cos"] = Operation.unaryOperator("cos", cos)
+        knownOps["tan"] = Operation.unaryOperator("tan", tan)
+        knownOps["("] = Operation.parenthese(false)
+        knownOps[")"] = Operation.parenthese(true)
+        knownOps["."] = Operation.dot
+        knownOps["e"] = Operation.e
+        knownOps["pi"] = Operation.pi
     }
     //MARK: 接口函数
     //计算算式值
@@ -93,26 +93,20 @@ class CalculatorBrain {
         return Double(calculateIn()!)
     }
     //将运算数字或运算符压入栈中
-    func pushOperand(operand: String){
+    func pushOperand(_ operand: String){
         if knownOps.keys.contains(operand) {
             preStack.append(knownOps[operand]!)
         }
         else{
-            preStack.append(Operation.Operand(Double(operand)!))
+            preStack.append(Operation.operand(Double(operand)!))
         }
     }
 
     //将输入的数字或运算符删除一个
-    func popOperand() -> String {
+    func popOperand(){
         if preStack.count > 0 {
-            if let value = preStack.popLast(){
-                return value.description
-            }
-            else{
-                return ""
-            }
+            preStack.popLast()
         }
-        return ""
     }
     //将输入的内容清零
     func clearOpSatck(){
@@ -120,14 +114,14 @@ class CalculatorBrain {
     }
     //MARK: 运算逻辑
     //中缀表达式
-    private var inStack = [Operation]()
+    fileprivate var inStack = [Operation]()
     //算式解析，将数字拼在一起，将E与PI替换成数字
-    private func parseFormula() -> Bool {
+    fileprivate func parseFormula() -> Bool {
         //首先判断括号是否一一匹配
         var parentsis = 0
         for op in preStack {
             switch op {
-            case .Parenthese(let direction):
+            case .parenthese(let direction):
                 if direction {
                     parentsis=parentsis-1
                 }
@@ -145,20 +139,20 @@ class CalculatorBrain {
         var buffer:String = ""
         for op in preStack {
             switch op {
-            case .Operand(let value):
+            case .operand(let value):
                 buffer += "\(Int(value))"
                 continue
-            case .Dot:
+            case .dot:
                 buffer += "."
                 continue
-            case .E:
-                tempStack.append(Operation.Operand(M_E))
-            case .PI:
-                tempStack.append(Operation.Operand(M_PI))
+            case .e:
+                tempStack.append(Operation.operand(M_E))
+            case .pi:
+                tempStack.append(Operation.operand(M_PI))
             default:
                 if !buffer.isEmpty{
                     if let value = Double(buffer) {
-                        tempStack.append(Operation.Operand(value))
+                        tempStack.append(Operation.operand(value))
                         buffer = ""
                     }
                     else {
@@ -169,7 +163,7 @@ class CalculatorBrain {
             }
         }
         if let value = Double(buffer) {
-            tempStack.append(Operation.Operand(value))
+            tempStack.append(Operation.operand(value))
         }
         preStack = tempStack
         return true
@@ -177,26 +171,26 @@ class CalculatorBrain {
     
     
     //前缀表达式转中缀表达式
-    private func preToIn(){
+    fileprivate func preToIn(){
         var temp = [Operation]()
         var unaryOperator:Operation?
         for op in preStack {
             //            print(op)
             switch op {
-            case .Operand(_):
+            case .operand(_):
                 inStack.append(op)
                 if unaryOperator != nil {
                     inStack.append(unaryOperator!)
                     unaryOperator=nil
                 }
                 
-            case .UnaryOperator(_, _):
+            case .unaryOperator(_, _):
                 unaryOperator = op
-            case .BinaryOperator(_, _):
+            case .binaryOperator(_, _):
                 if !temp.isEmpty {
                     lable: while temp.last!.compareTo(op)>=0 {
                         switch temp.last! {
-                        case .Parenthese(false):
+                        case .parenthese(false):
                             break lable
                         default:
                             inStack.append(temp.removeLast())
@@ -207,12 +201,12 @@ class CalculatorBrain {
                     }
                 }
                 temp.append(op)
-            case .Parenthese(false):
+            case .parenthese(false):
                 temp.append(op)
-            case .Parenthese(true):
+            case .parenthese(true):
                 lable: while true {
                     switch temp.last! {
-                    case .Parenthese(false):
+                    case .parenthese(false):
                         temp.removeLast()
                         break lable
                     default:
@@ -241,15 +235,15 @@ class CalculatorBrain {
     }
     
     //计算中缀表达式
-    private func calculateIn() -> String?{
+    fileprivate func calculateIn() -> String?{
         var operandStack = [Double]()
         for op in inStack {
             switch op {
-            case .Operand(let value):
+            case .operand(let value):
                 operandStack.append(value)
-            case .UnaryOperator(_, let unaryOperator):
+            case .unaryOperator(_, let unaryOperator):
                 operandStack.append(unaryOperator(operandStack.removeLast()))
-            case .BinaryOperator(_, let binaryOperator):
+            case .binaryOperator(_, let binaryOperator):
                 let rightValue = operandStack.removeLast()
                 let leftValue = operandStack.removeLast()
                 operandStack.append(binaryOperator(leftValue,rightValue))
