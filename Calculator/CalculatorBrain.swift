@@ -12,7 +12,7 @@ import Foundation
      计算器的逻辑控制模块
 */
 class CalculatorBrain {
-    //MARK: 内置数据
+    //MARK: 内置数据结构
     //计算器的输入有三类：数字、一元运算符、二元运算符
     fileprivate enum Operation: CustomStringConvertible {
         case operand(Double)    //运算数字
@@ -87,10 +87,11 @@ class CalculatorBrain {
         if !parseFormula() {
             return nil
         }
-        //        print(preStack)
         preToIn()
-        //        print(inStack)
-        return Double(calculateIn()!)
+        if let calAns = calculateIn(){
+            return Double(calAns)
+        }
+        return nil
     }
     //将运算数字或运算符压入栈中
     func pushOperand(_ operand: String){
@@ -175,7 +176,6 @@ class CalculatorBrain {
         var temp = [Operation]()
         var unaryOperator:Operation?
         for op in preStack {
-            //            print(op)
             switch op {
             case .operand(_):
                 inStack.append(op)
@@ -216,8 +216,6 @@ class CalculatorBrain {
             default:
                 break
             }
-            //            print(temp)
-            //            print(inStack)
         }
         if !temp.isEmpty {
             while true {
@@ -250,11 +248,8 @@ class CalculatorBrain {
             default:
                 break
             }
-            //            print(op)
-            //            print(operandStack)
         }
         if operandStack.isEmpty {
-            //            print("is Empty")
             return nil
         }
         else{
